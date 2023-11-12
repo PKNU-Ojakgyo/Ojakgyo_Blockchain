@@ -1,11 +1,9 @@
-package Ojakgyo_chaincode
+package main
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hyperledger/fabric-chaincode-go/shim"
-   	"github.com/hyperledger/fabric-chaincode-go/shimtest"
-sc 	"github.com/hyperledger/fabric-protos-go/peer"
+
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
 
@@ -20,7 +18,7 @@ type SmartContract struct {
 type DealContract struct {
 	ID    		string `json:"dealID"`
 	RepAndRes 	string `json:"repAndRes"`
-	Etc  		int    `json:"etc"`
+	Etc  		string `json:"etc"`
 }
 
 // InitLedger adds a base set of assets to the ledger
@@ -110,4 +108,14 @@ func (s *SmartContract) DealContractExists(ctx contractapi.TransactionContextInt
 	}
 
 	return dealContractJSON != nil, nil
+}
+
+func main() {
+	cc, err := contractapi.NewChaincode(new(SmartContract))
+	if err != nil {
+		panic(err.Error())
+	}
+	if err := cc.Start(); err != nil {
+		fmt.Printf("Error starting ABstore chaincode: %s", err)
+	}
 }
