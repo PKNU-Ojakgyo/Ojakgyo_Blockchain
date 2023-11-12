@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
@@ -19,13 +20,14 @@ type DealContract struct {
 	ID    		string `json:"dealID"`
 	RepAndRes 	string `json:"repAndRes"`
 	Etc  		string `json:"etc"`
+	Price   string `json:"proce"`
 }
 
 // InitLedger adds a base set of assets to the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	dealContracts := []DealContract{
-		{ID : "1", RepAndRes : " 판매자는 물품을 인도하기 전, 물품의 하자나 손상 여부를 확인하여야 합니다.", Etc : "책임은 판매자가 부담합니다."},
-		{ID : "2", RepAndRes : "구매자는 물품 수령 후, 물품에 대한 하자나 손상 여부를 확인하여야 합니다.", Etc : "책임은 구매자가 부담합니다."},
+		{ID : "1", RepAndRes : "판매자는 물품을 인도하기 전, 물품의 하자나 손상 여부를 확인하여야 합니다.", Etc : "책임은 판매자가 부담합니다.",Price :"300,000"},
+		{ID : "2", RepAndRes : "구매자는 물품 수령 후, 물품에 대한 하자나 손상 여부를 확인하여야 합니다.", Etc : "책임은 구매자가 부담합니다.",,Price :"530,000"},
 	}
 
 	for _, dealContract := range dealContracts {
@@ -44,7 +46,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 }
 
 // CreateAsset issues a new asset to the world state with given details.
-func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, id string, repAndRes string, etc string) error {
+func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface, id string, repAndRes string, etc string, price string) error {
 	exists, err := s.DealContractExists(ctx, id)
 	if err != nil {
 		return err
@@ -57,13 +59,19 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 		ID:             id,
 		RepAndRes:      repAndRes,
 		Etc:			etc,
+		Price:    price,
 	}
 	dealContractJSON, err := json.Marshal(dealContract)
 	if err != nil {
 		return err
 	}
 
-	return ctx.GetStub().PutState(id, dealContractJSON)
+	err = ctx.GetStub().PutState(id, dealContractJSON)
+	if err != nil {
+		return fmt.Errorf("failed to put to world state. %v", err)
+	}
+
+	return  nil
 }
 
 // ReadAsset returns the asset stored in the world state with given id.
