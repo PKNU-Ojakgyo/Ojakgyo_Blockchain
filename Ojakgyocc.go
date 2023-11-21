@@ -27,7 +27,7 @@ type DealContract struct {
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	dealContracts := []DealContract{
 		{ID : "1", RepAndRes : "판매자는 물품을 인도하기 전, 물품의 하자나 손상 여부를 확인하여야 합니다.", Note : "책임은 판매자가 부담합니다.",Price :"300,000"},
-		{ID : "2", RepAndRes : "구매자는 물품 수령 후, 물품에 대한 하자나 손상 여부를 확인하여야 합니다.", Note : "책임은 구매자가 부담합니다.",,Price :"530,000"},
+		{ID : "2", RepAndRes : "구매자는 물품 수령 후, 물품에 대한 하자나 손상 여부를 확인하여야 합니다.", Note : "책임은 구매자가 부담합니다.",Price :"530,000"},
 	}
 
 	for _, dealContract := range dealContracts {
