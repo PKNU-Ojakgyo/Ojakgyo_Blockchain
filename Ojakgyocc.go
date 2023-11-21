@@ -1,4 +1,4 @@
-package main
+package Ojakgyo_chaincode
 
 import (
 	"encoding/json"
@@ -20,7 +20,7 @@ type DealContract struct {
 	ID    		string `json:"dealID"`
 	RepAndRes 	string `json:"repAndRes"`
 	Etc  		string `json:"etc"`
-	Price   string `json:"proce"`
+	Price   	string `json:"proce"`
 }
 
 // InitLedger adds a base set of assets to the ledger
@@ -59,7 +59,7 @@ func (s *SmartContract) CreateAsset(ctx contractapi.TransactionContextInterface,
 		ID:             id,
 		RepAndRes:      repAndRes,
 		Etc:			etc,
-		Price:    price,
+		Price:    		price,
 	}
 	dealContractJSON, err := json.Marshal(dealContract)
 	if err != nil {
